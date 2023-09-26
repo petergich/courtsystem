@@ -1,0 +1,170 @@
+{%load static%}
+{%if error_message %}
+<script>
+  alert('{{error_message}}');
+</script>
+{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Court System</title>
+
+    <!-- ==== STYLE.CSS ==== -->
+    <link rel="stylesheet" href="{% static 'court_system/core.css' %}" />
+    <link rel="stylesheet" href="{% static 'court_system/style.css' %}" />
+
+    <!-- ====  REMIXICON CDN ==== -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+
+    <!-- ==== ANIMATE ON SCROLL CSS CDN  ==== -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  </head>
+  <body>
+      <!-- ==== HEADER ==== -->
+    <header class="container header">
+      <!-- ==== NAVBAR ==== -->
+      <nav class="nav">
+        <div class="logo">
+          <h2>COURT SYSTEM</h2>
+        </div>
+
+        <div class="nav_menu" id="nav_menu">
+          <button class="close_btn" id="close_btn">
+            <i class="ri-close-fill"></i>
+          </button>
+
+          <ul class="nav_menu_list">
+            <li class="nav_menu_item">
+              <a href="#" class="nav_menu_link" id="service">service</a>
+            </li>
+            <li class="nav_menu_item m-2">
+              <button href="#" class="btn btnLogin-popup" style="height:auto;" id="login">login/<br>signup</button>
+            </li>
+            {% comment %} <li class="nav_menu_item">
+              <button href="#" class="btn" id="signup">signup</button>
+            </li> {% endcomment %}
+          </ul>
+        </div>
+
+        <button class="toggle_btn" id="toggle_btn">
+          <i class="ri-menu-line"></i>
+        </button>
+      </nav>
+    </header>
+
+
+    <section class="wrapper">
+      <div class="container">
+        <div class="grid-cols-2">
+          <div class="grid-item-1">
+            <h1 class="main-heading">
+              <span><b>ONLINE COURT SYSTEM.</b></span>
+              <br />
+              Say No To Injustice!!
+            </h1>
+            <p class="info-text">
+              This online court aid system 
+              will help you track your case
+              progress with flexibility and 
+              also helps you find a lawyer of 
+              your prefferences.
+            </p>
+
+            <div class="btn_wrapper">
+              <i class="fas fa-download"></i>
+              <button class="btn btn-info">Download Constitution</button>
+            </div>
+            <div class="grid-item-2">
+              <div class="team_img_wrapper">
+              </div>
+            </div>
+          </div>
+          <section class="container">
+            <div class="loginform">
+              <span class="icon-close">
+                <ion-icon name="close"></ion-icon>
+              </span>
+              <div class="form-box login">
+                <h2>Login</h2>
+                <form action="client_login" method="POST">
+                  {% csrf_token %}
+                  <div class="input-box">
+                    <span class=" icons"><ion-icon name="mail"></ion-icon></span>
+                    <input type="email" required placeholder="Email">
+                  </div>
+                  <div class="input-box">
+                    <span class=" icons "><ion-icon name="lock-closed"></ion-icon></span>
+                    <input type="password" required placeholder="Password">
+                  </div>
+                  <div class="remember-forget">
+                    <a href="#">Forgot Password?</a>
+                  </div>
+                  <button type="Submit" class="btn">Login</button>
+                  <div class="login-register">
+                    <p>Don't have an account?
+                      <a href="#" class="register-link">Register</a> 
+                    </p>
+                  </div>
+                </form>
+              </div>
+      
+      
+      
+              <div class="form-box register p-4">
+                <h2>Registration</h2>
+                <form action="client_save" method="POST">
+                  {% csrf_token %}
+                  <div class="input-box">
+                    <span class=" icons"><ion-icon id="username" name="username"></ion-icon></span>
+                    <input type="text" name="username" required placeholder="Username">
+                    
+                  </div>
+                  <div class="input-box">
+                    <span class=" icons"><ion-icon id="idno" name="idno"></ion-icon></span>
+                    <input type="number" name="idno" required placeholder="ID No/Roll Number">
+                  </div>
+                  <div class="input-box">
+                    <span class=" icons"><ion-icon id="mail" name="mail"></ion-icon></span>
+                    <input type="email" name="mail" required placeholder="Email">
+                  </div>
+                  <div class="input-box">
+                    <span class=" icons "><ion-icon id="password" name="lock-closed"></ion-icon></span>
+                    <input type="password" name="password" required placeholder="Password">
+                  </div>
+                  <button type="Submit" class="btn">Register</button>
+                  <div class="login-register">
+                    <p>Already have an account?
+                      <a href="#" class="login-link">login</a> 
+                    </p>
+                  </div>
+                </form>
+              </div>
+      
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>  
+    <!-- ==== ANIMATE ON SCROLL JS CDN -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- ==== GSAP CDN ==== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
+    <!-- ==== SCRIPT.JS ==== -->
+    <script src="{% static 'court_system/script.js' %}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  </body>
+</html>
