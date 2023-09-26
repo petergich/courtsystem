@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import clients_id, advocates_roll_number,client,lawyers
+from .models import *
+from django.contrib.auth import login
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 from django.http import JsonResponse 
-from time import sleep
+
 
 def home(request):
     return render(request,"court_system/index.html")
@@ -27,7 +30,9 @@ def client_save(request):
         if not client.objects.filter(username=username).exists() and not lawyers.objects.filter(username=username).exists() and not client.objects.filter(client_id=idNo).exists() and not lawyers.objects.filter(roll_number=idNo).exists():
             if advocates_roll_number.objects.filter(roll_number=idNo).exists():
                 lawyer=lawyers(username=username,email=email,password=clients_password,roll_number=advocates_roll_number.objects.get(roll_number=idNo))
+                user = User.objects.create_user(username=username, password=clients_password, email=email)
                 lawyer.save()
+                user.save()
                 return render(request,'court_system/index.html',{'error_message':"Lawyer found"})
             if clients_id.objects.filter(client_id=idNo).exists():
                 return render(request,'court_system/index.html',{'error_message':"clients found"})
