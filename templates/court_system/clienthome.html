@@ -15,7 +15,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Techminds</title>
+    <title>Court System</title>
 
     <meta name="description" content="" />
 
@@ -50,11 +50,8 @@
     <link rel="stylesheet" href="{% static 'vendor/fonts/boxicons.css' %}" />
 
     <!-- Core CSS -->
-    <link
-      rel="stylesheet"
-      href="{% static 'vendor/css/core.css' %}"
-      class="template-customizer-core-css"
-    />
+    <link rel="stylesheet" href="{% static 'court_system/core.css' %}" />
+    <link rel="stylesheet" href="{% static 'court_system/style.css' %}" />
     <link
       rel="stylesheet"
       href="{% static 'vendor/css/theme-default.css' %}"
@@ -94,7 +91,7 @@
           class="layout-menu menu-vertical menu bg-primary"
         >
           <div class="app-brand demo">
-            <a href="{% url 'dashboard' %}" class="app-brand-link">
+            <a href="#" class="app-brand-link">
               <span class="app-brand-logo demo">
                 <svg
                   width="25"
@@ -154,7 +151,7 @@
                 </svg>
               </span>
               <span class="app-brand-text demo menu-text fw-bolder ms-2"
-                >Inventory</span
+                >COURT</span
               >
             </a>
 
@@ -171,7 +168,7 @@
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item active">
-              <a href="{%url 'dashboard'%}" class="menu-link card bg-success card">
+              <a href="#" class="menu-link card bg-success card">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Home</div>
               </a>
@@ -179,7 +176,7 @@
             <ul class="menu-inner py-1">
               <!-- Dashboard -->
               <li class="menu-item active ">
-                <a href="{% url 'Issue' %}" class="menu-link bg-secondary">
+                <a href="#" class="menu-link bg-secondary">
                   <i class="menu-icon tf-icons bx bx-box"></i>
                   <div data-i18n="Analytics">Issue stocks</div>
                 </a>
@@ -258,7 +255,7 @@
                   <i class="bx bx-menu bx-sm"></i>
                 </a>
               </div>
-              <img src="{% static 'img/Techminds-logo.png'%}" alt="Logo" />
+              <div><h3 style="color:white;"><span style="color:black;">USERNAME: </span>{{client.username}}</h3></div>
               <button
                 class="navbar-toggler"
                 type="button"
@@ -273,13 +270,13 @@
               <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                   <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'dashboard'%}">Home</a>
+                    <a class="nav-link" href="#">Home</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">Services</a>
                   </li>
                   <li class="nav-item">
-                    <a href="{% url 'Logout' %}" class="nav-link card bg-primary">
+                    <a href="#" class="nav-link card bg-primary">
                       <div data-i18n="Analytics">Logout</div>
                     </a>
                   </li>
@@ -289,174 +286,15 @@
           </nav>
 
           <!-- Page content goes here -->
-          <div id="home" class="">
-            {% comment %} <div>
-              <button style="background-color: green"class="btn btn-secondary m-3">
-                Techminds Warehouse
-              </button>
-            </div> {% endcomment %}
-            <h4 class="ml m-3"><hr>Clients</h4>
-            <hr class="m-3" />
-            <div class="card1 clients m-4" id="clients">
-              {%if list_clients%} {%for client in list_clients%}
-              <div class="dropdown">
-                <button
-                  class="btn btn-secondary dropdown-toggle"
-                  data-toggle="dropdown"
-                  type="button"
-                  id="{{client.client.name}}"
-                >
-                  {{client.client.name}}
-                </button>
-                {%if client.projects%}
-
-                <div class="dropdown-menu">
-                  {%for project in client.projects%}
-                  <button
-                    data-toggle="modal"
-                    data-target="#{{project.project_type.name}}myModal"
-                    type="button"
-                    class="dropdown-item btn btn-outline-info"
-                  >
-                    {{project.project_type.name}}
-                  </button>
-
-                  {%endfor%}
-                </div>
-                {%endif%}
-              </div>
-              {%endfor%} {% else %}
-              <script>
-                element = document.getElementById("clients");
-                element.remove();
-              </script>
-
-              {%endif%} {%for x in list_clients%} {%for y in x.projects%} {%if y.project_region%}
-              <div class="modal fade" id="{{ y.project_type.name}}myModal">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                      <h4 class="modal-title">
-                        {{ x.client.name}} - {{ y.project_type.name }}
-                      </h4>
-                      <button type="button" class="close" data-dismiss="modal">
-                        &times;
-                      </button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                      <div class="container">
-                        <table class="table-hover table table-responsive">
-                          <thead>
-                            <tr class="table-hover">
-                              <th><h3>Project</h3></th>
-                              <th><h3>Region</h3></th>
-                              <th><h3>Owner</h3></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {%for z in y.project_region%}
-                            <tr class="table-info">
-                              <td>{{z.project_type.name}}</td>
-                              <td>{{z.region}}</td>
-                              <td>{{z.project_type.owner.name}}</td>
-                            </tr>
-
-                            {%endfor%}
-                          </tbody>
-                        </table>
-                      </div>
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-dismiss="modal"
-                      >Close</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {%endif%} {%endfor%} {%endfor%}
-              <hr />
+          <div class="m-4 container">
+            {% for case in cases%}
+            <div class="card">
+              <h5>Case Number:{{case.case_number}}</h5>
             </div>
+            {% endfor%}
           </div>
-          <div class="m-4">
-            <div class="align-self-center">
-              <h5 class="align-self-center">Stocks</h5>
-            </div>
-            <hr />
-            <div class="container">
-              <div >
-                <!-- Dropdown Button 1 -->
-                <button
-                  class="btn btn-primary bg-info mb-4 m-1 dropdown-toggle"
-                  type="button"
-                  id="dropdownButton1"
-                  data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-                  View Stock
-                </button>
-                {%if list_clients%}
-                <div class="dropdown-menu" aria-labelledby="dropdownButton1">
-                  <a class="dropdown-item btn btn-outline-info" href='{% url "current-stocks-list" %}'>
-                      All Stock
-                  </a>
-                  {% for client in list_clients %}
-                      <a class="dropdown-item btn btn-outline-info"
-                              href='{% url "current-stocks-list"%}?client_id={{ client.client.id }}'>
-                          {{ client.client.name }}
-                      </a>
-                  {% endfor %}
-              </div>
-                {%endif%}
-
-                <!-- Dropdown Button 2 -->
-                <button
-                  class="btn btn-primary bg-info mb-4 m-1 dropdown-toggle"
-                  type="button"
-                  id="dropdownButton2"
-                  data-bs-toggle="dropdown"
-                  data-bs-target="#dropdownMenu2"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-                  PO Stocks
-                </button>
-                {%if purchase_orders%}
-                <div
-                  class="dropdown-menu"
-                  id="dropdownMenu2"
-                  aria-labelledby="dropdownButton2"
-                >
-                <a class="dropdown-item btn btn-outline-info" href='{% url "postock" %}'>
-                  <button class="dropdown-item btn btn-outline-info">
-                    All POs'
-                  </button>
-                </a>
-                  {%for po in purchase_orders%}
-                 <a href='{% url "postock"%}?po_id={{ client.client.id }}'>
-                  <button class="dropdown-item btn btn-outline-info">
-                    {{po}}
-                  </button></a>
-                  {%endfor%}
-                </div>
-                {%endif%}
-                <a href="{% url 'Capex'%}" style="color: white">
-                <button class="btn btn-primary bg-info mb-4 m-1" type="button">
-                  
-                    <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-                    Capex
-                </button></a>
-              </div>
-            </div>
-            <canvas id="myChart" style="width:100%;max-width:40vw"></canvas>
-          </div>
-          <!-- Content wrapper -->
+         
+          <!-- Content wrapper --
         </div>
         <!-- / Layout page -->
       </div>

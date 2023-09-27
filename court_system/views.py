@@ -23,10 +23,16 @@ from django.contrib import messages, auth
 
 def home(request):
     return render(request,"court_system/index.html")
+@login_required(login_url="landingpage")
 def clientlogin(request):
-   return HttpResponse("Success")
+   clien=client.objects.get(username=request.session.get('username'))
+   cases=clien.cases.all()
+   print(cases)
+   object={"client":clien,"cases":cases}
+   return render(request,"court_system/clienthome.html",object)
+@login_required(login_url="landingpage")
 def lawyerlogin(request):
-    return HttpResponse("lawyer")
+    return render(request,"court_system/lawyerhome.html")
 def Login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -35,10 +41,12 @@ def Login(request):
         if user is not None:
             if client.objects.filter(username=username).exists:
                 auth.login(request, user)
-                return redirect("client found")
+                request.session['username']=username
+                return redirect("clienthome")
             if lawyers.objects.filter(username=username).exists:
                 auth.login(request, user)
-                return HttpResponse("lawyer found")
+                request.session['username']=username
+                return redirect("lawyerhome")
             if not client.objects.filter(username=username).exists and not lawyers.objects.filter(username=username).exists:
                 return redirect("landingpage")
         else:

@@ -38,7 +38,7 @@ class demand_letter(models.Model):
     documents=models.TextField()
     statement=models.TextField()
     def __str__(self):
-        return self.sender
+        return self.sender.name
     
 
 class case(models.Model):

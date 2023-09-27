@@ -39,7 +39,7 @@ MIDDLEWARE = [
     # ...
 ]
 
-LOGIN_URL="home"
+LOGIN_URL="landingpage"
 INSTALLED_APPS = [
     'court_system.apps.CourtSystemConfig',
     'django.contrib.admin',

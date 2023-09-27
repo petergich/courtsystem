@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import clients_id,advocates_roll_number,lawyers,case,charge_sheet,demand_letter,client
+from .models import clients_id,advocates_roll_number,lawyers,case,charge_sheet,demand_letter,client,courts
 
 admin.site.register(clients_id)
 admin.site.register(advocates_roll_number)
@@ -8,4 +8,5 @@ admin.site.register(charge_sheet)
 admin.site.register(case)
 admin.site.register(client)
 admin.site.register(lawyers)
+admin.site.register(courts)
 # Register your models here.
