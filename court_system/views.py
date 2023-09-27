@@ -23,16 +23,24 @@ from django.contrib import messages, auth
 
 def home(request):
     return render(request,"court_system/index.html")
-def mytry(request):
+def clientlogin(request):
    return HttpResponse("Success")
+def lawyerlogin(request):
+    return HttpResponse("lawyer")
 def Login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = auth.authenticate(username=username, password=password)
         if user is not None:
-            auth.login(request, user)
-            return HttpResponse("mytry")
+            if client.objects.filter(username=username).exists:
+                auth.login(request, user)
+                return redirect("client found")
+            if lawyers.objects.filter(username=username).exists:
+                auth.login(request, user)
+                return HttpResponse("lawyer found")
+            if not client.objects.filter(username=username).exists and not lawyers.objects.filter(username=username).exists:
+                return redirect("landingpage")
         else:
             return redirect("landingpage")
 def userlanding(request):
