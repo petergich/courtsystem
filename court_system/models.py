@@ -72,7 +72,7 @@ class client(models.Model):
     client_id=models.OneToOneField(clients_id,on_delete=models.CASCADE)
     cases=models.ManyToManyField(case,through='cases_instances')
     def __str__ (self):
-        return self.client_id
+        return self.username
 
 class cases_instances(models.Model):
     lawyer=models.ForeignKey(lawyers, on_delete=models.SET_NULL,null=True,default=None)

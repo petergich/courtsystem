@@ -1,18 +1,55 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
+from django.db.models import F
+from openpyxl import Workbook
+import openpyxl
+import urllib
+import ast
+import io
+import zipfile
+from openpyxl import Workbook
+from io import BytesIO
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated 
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
-from django.contrib.auth import login
 from django.shortcuts import render, redirect
+from django.views import View
+import json
 from django.contrib.auth.models import User
-from django.http import JsonResponse 
-
+from django.http import JsonResponse
+import os
+import mimetypes
+from django.core.serializers import serialize
+import time
+from django.db.models import Sum
+import datetime
+from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import api_view
+from openpyxl.styles import PatternFill, Font
+import base64
+from django.contrib import messages, auth
 
 def home(request):
     return render(request,"court_system/index.html")
-def client_login(request):
-    return render(request,"court_system/login.html")
-def client_signup(request):
-    return render(request,"court_system/client_signup.html")
+def Login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = auth.authenticate(username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+        else:
+            return redirect("login")
+    else:
+        return render(request, 'auth-login-basic.html')
+@login_required(login_url="login")
+def userlanding(request):
+    HttpResponse("loged in successfully")
 def client_save(request):
     if request.method=='POST':
         username=request.POST['username']
@@ -33,7 +70,11 @@ def client_save(request):
                 user = User.objects.create_user(username=username, password=clients_password, email=email)
                 lawyer.save()
                 user.save()
-                return render(request,'court_system/index.html',{'error_message':"Lawyer found"})
+                return render(request,'court_system/index.html',{'error_message':"Lawyer Account Created Successfully"})
             if clients_id.objects.filter(client_id=idNo).exists():
-                return render(request,'court_system/index.html',{'error_message':"clients found"})
+                clienti=client(username=username,email=email,password=clients_password, client_id=clients_id.objects.get(client_id=idNo,))
+                user = User.objects.create_user(username=username, password=clients_password, email=email)
+                clienti.save()
+                user.save()
+                return render(request,'court_system/index.html',{'error_message':"Client Account Created successfully"})
 # Create your views here.
