@@ -11,7 +11,7 @@ class clients_id(models.Model):
     client_id=models.IntegerField(primary_key=True)
     name=models.CharField(max_length=50,null=True,default=None)
     def __str__(self):
-        return self.client_id
+        return str(self.client_id)
 
 class advocates_roll_number(models.Model):
     roll_number=models.CharField(max_length=50,primary_key=True)
@@ -55,21 +55,21 @@ class case(models.Model):
         return self.case_number
 
 class lawyers(models.Model):
-    username=models.CharField(max_length=50)
-    email=models.EmailField(max_length=254)
-    password=models.CharField(max_length=50)
+    username=models.CharField(max_length=50, unique=True)
+    email=models.EmailField(max_length=254,unique=True)
+    password=models.CharField(max_length=50,primary_key=True)
     roll_number=models.OneToOneField(advocates_roll_number,on_delete=models.CASCADE)
     phone_number=models.CharField(max_length=50,null=True,default=None)
     availability=models.BooleanField(default=False)
     private=models.BooleanField(default=False)
     cases=models.ManyToManyField(case,through="cases_instances",null=True)
     def __str__(self):
-        return self.roll_number.roll_number
+        return self.username
 class client(models.Model):
     username=models.CharField(max_length=50,primary_key=True)
-    email=models.EmailField(max_length=254)
+    email=models.EmailField(max_length=254,unique=True)
     password=models.CharField(max_length=50)
-    client_id=models.OneToOneField(clients_id,on_delete=models.CASCADE)
+    client_id=models.ForeignKey(clients_id,on_delete=models.CASCADE,unique=True)
     cases=models.ManyToManyField(case,through='cases_instances')
     def __str__ (self):
         return self.username

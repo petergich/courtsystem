@@ -1,18 +1,7 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.db.models import F
-from openpyxl import Workbook
-import openpyxl
-import urllib
-import ast
-import io
-import zipfile
-from openpyxl import Workbook
 from io import BytesIO
-from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated 
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -29,13 +18,13 @@ import time
 from django.db.models import Sum
 import datetime
 from django.contrib.auth.decorators import login_required
-from rest_framework.decorators import api_view
-from openpyxl.styles import PatternFill, Font
 import base64
 from django.contrib import messages, auth
 
 def home(request):
     return render(request,"court_system/index.html")
+def mytry(request):
+   return HttpResponse("Success")
 def Login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -43,11 +32,9 @@ def Login(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
+            return HttpResponse("mytry")
         else:
-            return redirect("login")
-    else:
-        return render(request, 'auth-login-basic.html')
-@login_required(login_url="login")
+            return redirect("landingpage")
 def userlanding(request):
     HttpResponse("loged in successfully")
 def client_save(request):

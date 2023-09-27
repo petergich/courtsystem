@@ -29,7 +29,17 @@ ALLOWED_HOSTS = ['*']
 
 
 # Application definition
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # Default backend
+    # Add your custom authentication backend if applicable
+]
+MIDDLEWARE = [
+    # ...
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    # ...
+]
 
+LOGIN_URL="home"
 INSTALLED_APPS = [
     'court_system.apps.CourtSystemConfig',
     'django.contrib.admin',
