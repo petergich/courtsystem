@@ -9,4 +9,6 @@ urlpatterns = [
     path("lawyerhome",views.lawyerlogin,name="lawyerhome"),
     path("client_login",views.Login,name="login"),
     path("client_save",views.client_save,name="client_save"),
+    path("download",views.download,name="download"),
+    path("searchlawyer",views.searchlawyer,name="searchlawyer"),
 ]

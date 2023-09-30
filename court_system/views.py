@@ -20,6 +20,23 @@ import datetime
 from django.contrib.auth.decorators import login_required
 import base64
 from django.contrib import messages, auth
+from django.http import FileResponse
+import os
+
+def download(request):
+    # Define the path to your file
+    pdf_file_path = 'court_system/constitution/The_Constitution_of_Kenya_2010.pdf'  # Replace with the actual file path
+
+    # Get the file name from the path
+    pdf_file_name = os.path.basename(pdf_file_path)
+
+    
+    # Open the PDF file for reading
+    with open(pdf_file_path, 'rb') as pdf_file:
+        # Create an HTTP response with the appropriate content type and filename
+        response = HttpResponse(pdf_file.read(), content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{pdf_file_name}"'
+        return response
 
 def home(request):
     message=request.GET.get('data')
@@ -28,29 +45,40 @@ def home(request):
 def clientlogin(request):
    clien=client.objects.get(username=request.session.get('username'))
    cases=clien.cases.all()
-   print(cases)
    object={"client":clien,"cases":cases}
    return render(request,"court_system/clienthome.html",object)
 @login_required(login_url="landingpage")
+def searchlawyer(request):
+    return render(request,"court_system/searchlawyer.html")
+@login_required(login_url="landingpage")
 def lawyerlogin(request):
-    return render(request,"court_system/lawyerhome.html")
+    lawy=lawyers.objects.get(username=request.session.get('username'))
+    cases=lawy.cases.all()
+    object={"lawyer":lawy,"cases":cases}
+    return render(request,"court_system/lawyerhome.html",object)
 def Login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = auth.authenticate(username=username, password=password)
         if user is not None:
-            if client.objects.filter(username=username).exists:
-                auth.login(request, user)
-                request.session['username']=username
-                return redirect("clienthome")
-            if lawyers.objects.filter(username=username).exists:
-                auth.login(request, user)
-                request.session['username']=username
-                return redirect("lawyerhome")
-            if not client.objects.filter(username=username).exists and not lawyers.objects.filter(username=username).exists:
-                message='Invalid Credentials'
-                return redirect('/landingpage?data='+message)
+            try:
+                    c=client.objects.get(username=username)
+                    print("client")
+                    auth.login(request, user)
+                    request.session['username']=username
+                    return redirect("clienthome")
+            except:
+                try:
+                        c=lawyers.objects.get(username=username)
+                        print("Lawyer")
+                        auth.login(request, user)
+                        request.session['username']=username
+                        return redirect("lawyerhome")
+                except:
+                    if not client.objects.filter(username=username).exists and not lawyers.objects.filter(username=username).exists:
+                        message='Invalid Credentials'
+                        return redirect('/landingpage?data='+message)
         else:
             message='Invalid Credentials'
             return redirect('/landingpage?data='+message)

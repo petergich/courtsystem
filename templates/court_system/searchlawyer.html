@@ -21,7 +21,6 @@
 
     <!-- Favicon -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <link
@@ -170,8 +169,8 @@
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item active align-items-center"">
-              <a href="{% url 'lawyerhome'%}" class="menu-link card bg-primary">
+            <li class="menu-item active align-items-center" style="width:max-content">
+              <a href="{% url 'clienthome'%}" class="menu-link card bg-primary card">
                 <div style="color:#ffffff"> 
                 <i class="menu-icon tf-icons bx bx-home-circle"style="color:#ffffff"></i>Home
                 </div>
@@ -180,9 +179,9 @@
             <ul class="menu-inner py-1">
               <!-- Dashboard -->
               <li class="menu-item active m-3 card" style="width:fit-content">
-                <a href="#" class="menu-link">
-                  <i class="fas fa-user m-3"></i>
-                  <div data-i18n="Analytics">Profile</div>
+                <a href="{% url 'searchlawyer'%}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-box"></i>
+                  <div data-i18n="Analytics">Search Lawyer</div>
                 </a>
               </li>
             </ul>
@@ -205,7 +204,7 @@
                   <i class="bx bx-menu bx-sm"></i>
                 </a>
               </div>
-              <div><h3 style="color:white;"><span style="color:black;">USERNAME:</span>{{lawyer.username}}</h3></div>
+              <div><h3 style="color:white;"><span style="color:black;">USERNAME: </span>{{client.username}}</h3></div>
               <button
                 class="navbar-toggler"
                 type="button"
@@ -236,27 +235,10 @@
           </nav>
 
           <!-- Page content goes here -->
-          <div class="vw-100">
-          <div class="container opaque-background1 vh-100 vw-100 d-flex justify-content-center align-items-center position-absolute" style="z-index: 999;">
-            <div class="card p-4 align-items-left">
-            <!-- Your vertically centered content here -->
-            <h5 style="color:#707070"><b>Username</b>     : <span style="color:#964b00">{{lawyer.username}}</span></h5>
-            <h5 style="color:#707070"><b>Email</b>     : <span style="color:#964b00">{{lawyer.email}}</span></h5>
-            <h5 style="color:#707070"><b>Phone Number</b>     : <span style="color:#964b00">{{lawyer.phone_number}}</span></h5>
-            </div>
+          <div class="m-4 container p-3">
+            
           </div>
-          {% for case in cases%}
-            <div class="card mb-3 p-3 m-3">
-              <h5 style="color:#707070"><b>Case Number</b>     : <span style="color:#964b00">{{case.case_number}}</span></h5>
-              <h5 style="color:#707070"><b>Court</b>             : <span style="color:#964b00">{{case.court}}</span></h5>
-              <h5 style="color:#707070"><b>Pre-Trial Date</b>   : <span style="color:#964b00">{{case.pre_trial_date}}</span></h5>
-              <h5 style="color:#707070"><b>Trial Date</b>    : <span style="color:#964b00">{{case.trial_date}}</span></h5>
-              <h5 style="color:#707070"><b>Decicion Date</b>    : <span style="color:#964b00">{{case.decision_date}}</span></h5>
-              <h5 style="color:#707070"><b>Issuance Of Decree</b>:<span style="color:#964b00"> {{case.issuance_of_decree}}</span></h5>
-              <h5 style="color:#707070"><b>Enforcement</b>       : <span style="color:#964b00">{{case.enforcement}}</span></h5>
-            </div>
-            {% endfor%}
-        </div>
+         
           <!-- Content wrapper --
         </div>
         / Layout page -->
