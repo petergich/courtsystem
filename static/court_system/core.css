@@ -3992,6 +3992,9 @@ fieldset:disabled .btn {
   flex-direction: column;
   justify-content: space-between;
 }
+.opaque-background{
+  background-color:rgb(0, 210, 247,0.4)
+}
 .card1{
   
   position: relative;

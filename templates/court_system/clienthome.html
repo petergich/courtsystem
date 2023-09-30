@@ -88,7 +88,7 @@
 
         <aside
           id="layout-menu"
-          class="layout-menu menu-vertical menu bg-primary"
+          class="layout-menu menu-vertical menu opaque-background"
         >
           <div class="app-brand demo">
             <a href="#" class="app-brand-link">
@@ -286,10 +286,16 @@
           </nav>
 
           <!-- Page content goes here -->
-          <div class="m-4 container">
+          <div class="m-4 container p-3">
             {% for case in cases%}
-            <div class="card">
-              <h5>Case Number:{{case.case_number}}</h5>
+            <div class="card mb-3 p-3">
+              <h5 style="color:#707070"><b>Case Number</b>     : <span style="color:#964b00">{{case.case_number}}</span></h5>
+              <h5 style="color:#707070"><b>Court</b>             : <span style="color:#964b00">{{case.court}}</span></h5>
+              <h5 style="color:#707070"><b>Pre-Trial Date</b>   : <span style="color:#964b00">{{case.pre_trial_date}}</span></h5>
+              <h5 style="color:#707070"><b>Trial Date</b>    : <span style="color:#964b00">{{case.trial_date}}</span></h5>
+              <h5 style="color:#707070"><b>Decicion Date</b>    : <span style="color:#964b00">{{case.decision_date}}</span></h5>
+              <h5 style="color:#707070"><b>Issuance Of Decree</b>:<span style="color:#964b00"> {{case.issuance_of_decree}}</span></h5>
+              <h5 style="color:#707070"><b>Enforcement</b>       : <span style="color:#964b00">{{case.enforcement}}</span></h5>
             </div>
             {% endfor%}
           </div>

@@ -22,7 +22,8 @@ import base64
 from django.contrib import messages, auth
 
 def home(request):
-    return render(request,"court_system/index.html")
+    message=request.GET.get('data')
+    return render(request,"court_system/index.html",{"error_message":message})
 @login_required(login_url="landingpage")
 def clientlogin(request):
    clien=client.objects.get(username=request.session.get('username'))
@@ -48,9 +49,11 @@ def Login(request):
                 request.session['username']=username
                 return redirect("lawyerhome")
             if not client.objects.filter(username=username).exists and not lawyers.objects.filter(username=username).exists:
-                return redirect("landingpage")
+                message='Invalid Credentials'
+                return redirect('/landingpage?data='+message)
         else:
-            return redirect("landingpage")
+            message='Invalid Credentials'
+            return redirect('/landingpage?data='+message)
 def userlanding(request):
     HttpResponse("loged in successfully")
 def client_save(request):
@@ -60,24 +63,30 @@ def client_save(request):
         clients_password=request.POST['password']
         idNo=request.POST['idno']
         if client.objects.filter(username=username).exists() or lawyers.objects.filter(username=username).exists():
-            return render(request,'court_system/index.html',{'error_message':'THE USERNAME IS ALREADY TAKEN'})
+            message='The Username is already taken'
+            return redirect('/landingpage?data='+message)
         if client.objects.filter(client_id=idNo).exists():
-            return render(request,'court_system/index.html',{'error_message':"A user with the ID already exists"})
+            message="A user with the ID already exists"
+            return redirect('/landingpage?data='+message)
         if lawyers.objects.filter(roll_number=idNo).exists():
-            return render(request,'court_system/index.html',{'error_message':"A lawyer with the Roll Number already exists"})
+            message="A lawyer with the Roll Number already exists"
+            return redirect('/landingpage?data='+message)
         if not clients_id.objects.filter(client_id=idNo).exists() and not advocates_roll_number.objects.filter(roll_number=idNo).exists():
-            return render(request,'court_system/index.html',{'error_message':"Invalid ID or roll number"})
+             message="Invalid ID or roll number"
+             return redirect('/landingpage?data='+message)
         if not client.objects.filter(username=username).exists() and not lawyers.objects.filter(username=username).exists() and not client.objects.filter(client_id=idNo).exists() and not lawyers.objects.filter(roll_number=idNo).exists():
             if advocates_roll_number.objects.filter(roll_number=idNo).exists():
                 lawyer=lawyers(username=username,email=email,password=clients_password,roll_number=advocates_roll_number.objects.get(roll_number=idNo))
                 user = User.objects.create_user(username=username, password=clients_password, email=email)
                 lawyer.save()
                 user.save()
-                return render(request,'court_system/index.html',{'error_message':"Lawyer Account Created Successfully"})
+                message="Lawyer account created successfully"
+                return redirect('/landingpage?data='+message)
             if clients_id.objects.filter(client_id=idNo).exists():
                 clienti=client(username=username,email=email,password=clients_password, client_id=clients_id.objects.get(client_id=idNo,))
                 user = User.objects.create_user(username=username, password=clients_password, email=email)
                 clienti.save()
                 user.save()
-                return render(request,'court_system/index.html',{'error_message':"Client Account Created successfully"})
+                message="Client account created successfully"
+                return redirect('/landingpage?data='+message)
 # Create your views here.

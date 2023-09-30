@@ -8,7 +8,7 @@ class courts(models.Model):
         return self.name
         
 class clients_id(models.Model):
-    client_id=models.IntegerField(primary_key=True)
+    client_id=models.CharField(max_length=50,primary_key=True)
     name=models.CharField(max_length=50,null=True,default=None)
     def __str__(self):
         return str(self.client_id)
@@ -79,7 +79,8 @@ class cases_instances(models.Model):
     cases=models.ForeignKey(case,on_delete=models.SET_NULL,null=True,default=None)
     client=models.ForeignKey(client,on_delete=models.SET_NULL,null=True,default=None)
     status=models.BooleanField(default=False)
-    
+    def __str__(self):
+        return self.cases.case_number
 
 
 

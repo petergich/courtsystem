@@ -2,6 +2,8 @@
 {%if error_message %}
 <script>
   alert('{{error_message}}');
+  url="landingpage"
+  window.location.href=url
 </script>
 {% endif %}
 <!DOCTYPE html>
@@ -34,11 +36,11 @@
   </head>
   <body>
       <!-- ==== HEADER ==== -->
-    <header class="container header">
+    <header class="container header opaque-background p-2" style="min-width:100vw;height:max-content">
       <!-- ==== NAVBAR ==== -->
-      <nav class="nav">
-        <div class="logo">
-          <h2>COURT SYSTEM</h2>
+      <nav class="nav" style="justify-content:space-between;">
+        <div class="">
+          <h3 style="color:aqua;margin-left:10vw;"><b>COURT SYSTEM</b></h3>
         </div>
 
         <div class="nav_menu" id="nav_menu">
@@ -48,9 +50,9 @@
 
           <ul class="nav_menu_list">
             <li class="nav_menu_item">
-              <a href="#" class="nav_menu_link" id="service">service</a>
+              <a href="{% url "landingpage"%}" class="nav_menu_link" id="service" style="color:aqua;"><b>Home</b></a>
             </li>
-            <li class="nav_menu_item m-2">
+            <li class="nav_menu_item"style="margin-right:10vw;">
               <button href="#" class="btn btnLogin-popup" style="height:auto;" id="login">login/<br>signup</button>
             </li>
             {% comment %} <li class="nav_menu_item">
@@ -73,9 +75,8 @@
             <h1 class="main-heading">
               <span><b>ONLINE COURT SYSTEM.</b></span>
               <br />
-              Say No To Injustice!!
             </h1>
-            <p class="info-text">
+            <p class="info-text" style="color:#000000">
               This online court aid system 
               will help you track your case
               progress with flexibility and 
@@ -133,7 +134,7 @@
                   </div>
                   <div class="input-box">
                     <span class=" icons"><ion-icon id="idno" name="idno"></ion-icon></span>
-                    <input type="number" name="idno" required placeholder="ID No/Roll Number">
+                    <input type="text" name="idno" required placeholder="ID No/Roll Number">
                   </div>
                   <div class="input-box">
                     <span class=" icons"><ion-icon id="mail" name="mail"></ion-icon></span>
