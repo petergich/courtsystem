@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 {% load static %}
+{%if error_message %}
+<script>
+  alert('{{error_message}}');
+  url="lawyerhome"
+  window.location.href=url
+</script>
+{% endif %}
 <html
   lang="en"
   class="light-style layout-menu-fixed"
@@ -170,7 +177,7 @@
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item active align-items-center"">
+            <li class="menu-item active align-items-center">
               <a href="{% url 'lawyerhome'%}" class="menu-link card bg-primary">
                 <div style="color:#ffffff"> 
                 <i class="menu-icon tf-icons bx bx-home-circle"style="color:#ffffff"></i>Home
@@ -180,9 +187,9 @@
             <ul class="menu-inner py-1">
               <!-- Dashboard -->
               <li class="menu-item active m-3 card" style="width:fit-content">
-                <a href="#" class="menu-link">
-                  <i class="fas fa-user m-3"></i>
-                  <div data-i18n="Analytics">Profile</div>
+                <a href="#" onclick="showprofile()"class="menu-link">
+                  <i class="fas fa-user m-3" ></i>
+                  <div data-i18n="Analytics" >Profile</div>
                 </a>
               </li>
             </ul>
@@ -223,10 +230,7 @@
                     <a class="nav-link" href="#">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link card bg-primary">
+                    <a href="{% url 'logout'%}" class="nav-link card bg-primary">
                       <div data-i18n="Analytics">Logout</div>
                     </a>
                   </li>
@@ -237,26 +241,47 @@
 
           <!-- Page content goes here -->
           <div class="vw-100">
-          <div class="container opaque-background1 vh-100 vw-100 d-flex justify-content-center align-items-center position-absolute" style="z-index: 999;">
-            <div class="card p-4 align-items-left">
-            <!-- Your vertically centered content here -->
-            <h5 style="color:#707070"><b>Username</b>     : <span style="color:#964b00">{{lawyer.username}}</span></h5>
-            <h5 style="color:#707070"><b>Email</b>     : <span style="color:#964b00">{{lawyer.email}}</span></h5>
-            <h5 style="color:#707070"><b>Phone Number</b>     : <span style="color:#964b00">{{lawyer.phone_number}}</span></h5>
-            </div>
+            <div id="profile"class="slow-change" >
+              <div class="slow-change container opaque-background1 vh-100 vw-100 d-flex justify-content-center align-items-center position-absolute " style="z-index: 999;">
+                <div class="card p-4 align-items-left">
+                    <span class="icon-close"onclick="hideprofile()">
+                      <i class="fas fa-times"></i>
+                    </span>
+                  <!-- Your vertically centered content here -->
+                  <form action="lawyerhome" method="POST">
+                      {% csrf_token %}
+                    <h5 style="color:#707070"><b>Username</b>     : <span style="color:#964b00">{{lawyer.username}}</span></h5>
+                    <h5 style="color:#707070"><b>Email</b>     : <span style="color:#964b00"><input class="opaque-background"type="email" style="color:brown;border-radius:5px"required name="email" value="{{lawyer.email}}"/></span></h5>
+                    <h5 style="color:#707070"><b>Roll Number</b>     : <span style="color:#964b00">{{lawyer.roll_number.roll_number}}</span></h5>
+                    <h5 style="color:#707070"><b>Phone Number</b>     : <span style="color:#964b00"><input type="text" class="opaque-background"style="color:brown;border-radius:5px"required name="phone_number" value="{{lawyer.phone_number}}"/></span></h5>
+                    <h5 style="color:#707070"><b>Availability</b>     : <span style="color:#964b00"><input type="checkbox" id="radio"class="opaque-background"style="color:brown;border-radius:5px" name="availability"/></span></h5>
+                    <div class="max-width d-flex justify-content-center align-items-center">
+                      <input class="max-width btn btn-info"type="submit" value="Save"/>
+                    </div>
+                  </form>
+                </div>
+             </div>
           </div>
-          {% for case in cases%}
+            {% if cases%}
+            {% for case in cases%}
             <div class="card mb-3 p-3 m-3">
               <h5 style="color:#707070"><b>Case Number</b>     : <span style="color:#964b00">{{case.case_number}}</span></h5>
               <h5 style="color:#707070"><b>Court</b>             : <span style="color:#964b00">{{case.court}}</span></h5>
               <h5 style="color:#707070"><b>Pre-Trial Date</b>   : <span style="color:#964b00">{{case.pre_trial_date}}</span></h5>
               <h5 style="color:#707070"><b>Trial Date</b>    : <span style="color:#964b00">{{case.trial_date}}</span></h5>
               <h5 style="color:#707070"><b>Decicion Date</b>    : <span style="color:#964b00">{{case.decision_date}}</span></h5>
-              <h5 style="color:#707070"><b>Issuance Of Decree</b>:<span style="color:#964b00"> {{case.issuance_of_decree}}</span></h5>
-              <h5 style="color:#707070"><b>Enforcement</b>       : <span style="color:#964b00">{{case.enforcement}}</span></h5>
+              
             </div>
             {% endfor%}
-        </div>
+            {% else%}
+            <div class="container vh-100 vw-100 d-flex justify-content-center align-items-center position-absolute" style="z-index: 999;">
+              <div class="card p-4 align-items-left">
+              <!-- Your vertically centered content here -->
+              <h2 style="color:red;font-style:bold;">There is no cases assigned to you yet!!</h2>
+              </div>
+            </div>
+            {% endif%}
+          </div>
           <!-- Content wrapper --
         </div>
         / Layout page -->
@@ -268,7 +293,29 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
+    <script>
+      var dynamicBooleanValue = "{{ lawyer.availability | safe }}";
+      var radio = document.getElementById('radio');
   
+      if (dynamicBooleanValue==="True") {
+        radio.checked = true;
+      } else {
+        radio.checked = false;
+      }
+      const profile=document.getElementById("profile");
+      profile.style.display="none"
+      function showprofile(){
+        if (profile.style.display === "none"){
+        profile.style.display="block"
+        }
+        else{
+          profile.style.display="none"
+        }
+      }
+      function hideprofile(){
+        profile.style.display="none"
+      }
+    </script>
     <script src="{% static 'vendor/libs/jquery/jquery.js' %}"></script>
     <script src="{% static 'vendor/libs/popper/popper.js' %}"></script>
     <script src="{% static 'vendor/js/bootstrap.js' %}"></script>

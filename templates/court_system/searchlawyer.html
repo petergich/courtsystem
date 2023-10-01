@@ -180,8 +180,8 @@
               <!-- Dashboard -->
               <li class="menu-item active m-3 card" style="width:fit-content">
                 <a href="{% url 'searchlawyer'%}" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-box"></i>
-                  <div data-i18n="Analytics">Search Lawyer</div>
+                  <i class="fas fa-search"></i> 
+                  <div data-i18n="Analytics"> Search Lawyer</div>
                 </a>
               </li>
             </ul>
@@ -222,10 +222,7 @@
                     <a class="nav-link" href="#">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link card bg-primary">
+                    <a href="{% url 'logout'%}" class="nav-link card bg-primary">
                       <div data-i18n="Analytics">Logout</div>
                     </a>
                   </li>
@@ -236,7 +233,37 @@
 
           <!-- Page content goes here -->
           <div class="m-4 container p-3">
-            
+            {% if lawyers%}
+            <div class="m-4">
+
+            <table class="table">
+              <thead class="table bg-info">
+                <tr>
+                  <td><h4><b>Name</b></h4></td>
+                  <td><h4><b>Email</b></h4></td>
+                  <td><h4><b>Phone Number</b></h4></td>
+                  <td><h4><b>No. of cases solved</b></h4></td>
+                </tr>
+              </thead>
+              <tbody>
+                {% for lawyer in lawyers%}
+                <tr class="opaque-background1">
+                  <td><h4 style="color:white">{{lawyer.roll_number.name}}</h4></td>
+                  <td><a href="mailto:{{lawyer.lawyer.email}}"><h4 style="color:white">{{lawyer.lawyer.email}}</h4></a></td>
+                  <td><a href="tel:{{lawyer.lawyer.phone_number}}"><h4 style="color:white">{{lawyer.lawyer.phone_number}}</h4></a></td>
+                  <td><h4 style="color:white">{{lawyer.cases}}</h4></td>
+                </tr>
+                {% endfor%}
+              </tbody>
+            </table>
+          </table>
+            {% else%}
+            <div class="container vh-100 vw-100 d-flex justify-content-center align-items-center position-absolute" style="z-index: 999;">
+              <div class="card p-4 align-items-left">
+              <!-- Your vertically centered content here -->
+              <h2 style="color:red;font-style:bold;">THERE ARE NO LAWYERS AVAILABLE!!</h2>
+              </div>
+            {% endif%}
           </div>
          
           <!-- Content wrapper --

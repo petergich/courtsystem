@@ -25,7 +25,6 @@ class charge_sheet(models.Model):
     offense_description=models.TextField()
     other_accused=models.CharField(max_length=50,null=True,default=None)
     evidence=models.TextField(null=True,default=None)
-    penalties=models.TextField(null=True,default=None)
     def __str__(self):
         return self.accused
     
@@ -47,8 +46,6 @@ class case(models.Model):
     pre_trial_date=models.DateField()
     trial_date=models.DateField()
     decision_date=models.DateField()
-    issuance_of_decree=models.TextField(default=None,null=True)
-    enforcement=models.TextField(default=None,null=True)
     charge_sheet=models.ForeignKey(charge_sheet,on_delete=models.CASCADE,unique=True,null=True,default=None)
     demand_letter=models.ForeignKey(demand_letter,on_delete=models.CASCADE,unique=True,null=True,default=None)
     def __str__(self):
@@ -57,9 +54,9 @@ class case(models.Model):
 class lawyers(models.Model):
     username=models.CharField(max_length=50, unique=True)
     email=models.EmailField(max_length=254,unique=True)
-    password=models.CharField(max_length=50,primary_key=True)
+    password=models.CharField(max_length=50)
     roll_number=models.OneToOneField(advocates_roll_number,on_delete=models.CASCADE)
-    phone_number=models.CharField(max_length=50,null=True,default=None)
+    phone_number=models.CharField(max_length=50,null=True)
     availability=models.BooleanField(default=False)
     private=models.BooleanField(default=False)
     cases=models.ManyToManyField(case,through="cases_instances",null=True)
@@ -80,7 +77,7 @@ class cases_instances(models.Model):
     client=models.ForeignKey(client,on_delete=models.SET_NULL,null=True,default=None)
     status=models.BooleanField(default=False)
     def __str__(self):
-        return self.cases.case_number
+        return "CLIENT: "+self.client.client_id.name+ " -  LAWYER: "+ self.lawyer.roll_number.name
 
 
 

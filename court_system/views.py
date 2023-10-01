@@ -43,19 +43,71 @@ def home(request):
     return render(request,"court_system/index.html",{"error_message":message})
 @login_required(login_url="landingpage")
 def clientlogin(request):
-   clien=client.objects.get(username=request.session.get('username'))
+   try:
+        clien=client.objects.get(username=request.session.get('username'))
+   except:
+        message='You were logged out'
+        return redirect('/landingpage?data='+message)
    cases=clien.cases.all()
    object={"client":clien,"cases":cases}
    return render(request,"court_system/clienthome.html",object)
 @login_required(login_url="landingpage")
 def searchlawyer(request):
-    return render(request,"court_system/searchlawyer.html")
+    try:
+        clien=client.objects.get(username=request.session.get('username'))
+    except:
+        message='You were logged out'
+        return redirect('/landingpage?data='+message)
+    lawye=lawyers.objects.filter(availability=True)
+    roll_numbers=advocates_roll_number.objects.all()
+    yers=[]
+    for law in lawye:
+        for roll in roll_numbers:
+            if roll == law.roll_number:
+                case=law.cases.all().count()
+                yers.append({"roll_number":roll,"lawyer":law,"cases":case})
+
+    object={"client":clien,"lawyers":yers}
+    return render(request,"court_system/searchlawyer.html",object)
 @login_required(login_url="landingpage")
 def lawyerlogin(request):
-    lawy=lawyers.objects.get(username=request.session.get('username'))
-    cases=lawy.cases.all()
-    object={"lawyer":lawy,"cases":cases}
-    return render(request,"court_system/lawyerhome.html",object)
+    if request.method=="POST":
+        email=request.POST.get('email')
+        phone=request.POST.get('phone_number')
+        if 'availability' in request.POST:
+             availability=True
+        else:
+             availability=False
+        try:
+          lawy=lawyers.objects.get(username=request.session.get('username'))
+          lawy.email=email
+          lawy.phone_number=phone
+          lawy.availability=availability
+          lawy.save()
+          cases=lawy.cases.all()
+          message="Changes saved successfully"
+          object={"lawyer":lawy,"cases":cases,"error_message":message}
+          return render(request,"court_system/lawyerhome.html",object)
+        except:
+            lawy=lawyers.objects.get(username=request.session.get('username'))
+            cases=lawy.cases.all()
+            message="There was an error in saving the changes!!"
+            object={"lawyer":lawy,"cases":cases,"error_message":message}
+            return render(request,"court_system/lawyerhome.html",object)
+    try:
+        lawy=lawyers.objects.get(username=request.session.get('username'))
+        cases=lawy.cases.all()
+        object={"lawyer":lawy,"cases":cases}
+        return render(request,"court_system/lawyerhome.html",object)
+
+    except:
+        message='You were logged out'
+        return redirect('/landingpage?data='+message)
+def Logout(request):
+    if request.method == 'POST':
+        auth.logout(request)
+        return redirect('landingpage')
+    return redirect('landingpage')
 def Login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -76,10 +128,12 @@ def Login(request):
                         request.session['username']=username
                         return redirect("lawyerhome")
                 except:
-                    if not client.objects.filter(username=username).exists and not lawyers.objects.filter(username=username).exists:
                         message='Invalid Credentials'
                         return redirect('/landingpage?data='+message)
         else:
+            message='Invalid Credentials'
+            return redirect('/landingpage?data='+message)
+    else:
             message='Invalid Credentials'
             return redirect('/landingpage?data='+message)
 def userlanding(request):

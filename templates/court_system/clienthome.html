@@ -21,6 +21,7 @@
 
     <!-- Favicon -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
@@ -178,7 +179,7 @@
               <!-- Dashboard -->
               <li class="menu-item active m-3 card" style="width:fit-content">
                 <a href="{% url 'searchlawyer'%}" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-box"></i>
+                  <i class="fas fa-search"></i>
                   <div data-i18n="Analytics">Search Lawyer</div>
                 </a>
               </li>
@@ -220,10 +221,7 @@
                     <a class="nav-link" href="#">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link card bg-primary">
+                    <a href="{% url 'logout'%}" class="nav-link card bg-primary">
                       <div data-i18n="Analytics">Logout</div>
                     </a>
                   </li>
@@ -234,6 +232,7 @@
 
           <!-- Page content goes here -->
           <div class="m-4 container p-3">
+            {% if cases%}
             {% for case in cases%}
             <div class="card mb-3 p-3">
               <h5 style="color:#707070"><b>Case Number</b>     : <span style="color:#964b00">{{case.case_number}}</span></h5>
@@ -241,10 +240,16 @@
               <h5 style="color:#707070"><b>Pre-Trial Date</b>   : <span style="color:#964b00">{{case.pre_trial_date}}</span></h5>
               <h5 style="color:#707070"><b>Trial Date</b>    : <span style="color:#964b00">{{case.trial_date}}</span></h5>
               <h5 style="color:#707070"><b>Decicion Date</b>    : <span style="color:#964b00">{{case.decision_date}}</span></h5>
-              <h5 style="color:#707070"><b>Issuance Of Decree</b>:<span style="color:#964b00"> {{case.issuance_of_decree}}</span></h5>
-              <h5 style="color:#707070"><b>Enforcement</b>       : <span style="color:#964b00">{{case.enforcement}}</span></h5>
             </div>
             {% endfor%}
+            {% else %}
+            <div class="container vh-100 vw-100 d-flex justify-content-center align-items-center position-absolute" style="z-index: 999;">
+              <div class="card p-4 align-items-left">
+              <!-- Your vertically centered content here -->
+              <h2 style="color:red;font-style:bold;">There is no cases for this account!!</h2>
+              </div>
+            </div>
+            {% endif%}
           </div>
          
           <!-- Content wrapper --

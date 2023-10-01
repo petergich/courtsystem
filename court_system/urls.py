@@ -11,4 +11,5 @@ urlpatterns = [
     path("client_save",views.client_save,name="client_save"),
     path("download",views.download,name="download"),
     path("searchlawyer",views.searchlawyer,name="searchlawyer"),
+    path("logout",views.Logout,name="logout"),
 ]
